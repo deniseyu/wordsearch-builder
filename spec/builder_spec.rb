@@ -10,8 +10,8 @@ describe WordsearchBuilder do
   end
 
   it 'prevents non-alphabetical characters' do
-    expect(builder.check_chars("kittens")).to eq true
-    expect(builder.check_chars("k1tt3n$")).to eq false
+    expect(builder.check_alpha("kittens")).to eq true
+    expect(builder.check_alpha("k1tt3n$")).to eq false
   end
 
   it 'checks the length of its longest side' do
@@ -46,6 +46,7 @@ describe WordsearchBuilder do
   it 'plots the word "dragonfly" diagonally beginning at space 0,0' do
     builder.plot_diagonal("dragonfly")
     expect(builder.grid[0][0]).to eq "d"
+    expect(builder.grid[1][1]).to eq "r"
   end
 
   it 'plots the word "butterfly" diagonally beginning at space 3,4' do
@@ -57,6 +58,12 @@ describe WordsearchBuilder do
   it 'raises an error when two words are attempted to be placed horizontally over the same square' do
     builder.plot_horizontal("hello")
     expect{ builder.plot_horizontal("goodbye", 0, 0)}.to raise_error "Letter already here"
+  end
+
+  it 'fills a grid with a random letter from a weighted pool' do
+    builder.fill_nil_square(5,5)
+    expect(builder.grid[5][5]).not_to eq nil
+    p builder.grid
   end
 
 end
